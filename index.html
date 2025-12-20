@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>早读养小树 - 朗朗书声激励系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2e7d32;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #388e3c, #2e7d32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: #43a047;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #546e7a;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .control-panel {
+            flex: 1;
+            min-width: 300px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 5px solid #81c784;
+        }
+        
+        .garden-container {
+            flex: 2;
+            min-width: 300px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 5px solid #81c784;
+            min-height: 500px;
+        }
+        
+        .panel-title {
+            color: #2e7d32;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #a5d6a7;
+            padding-bottom: 10px;
+        }
+        
+        .db-control {
+            margin-bottom: 25px;
+        }
+        
+        .db-label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #388e3c;
+        }
+        
+        .db-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .db-slider {
+            flex: 1;
+            height: 20px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #4caf50, #ff9800, #f44336);
+            border-radius: 10px;
+            outline: none;
+        }
+        
+        .db-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #2e7d32;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .db-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2e7d32;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .db-display {
+            background-color: #e8f5e9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 3px solid #81c784;
+        }
+        
+        .current-db {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .db-status {
+            font-size: 1.3rem;
+            color: #546e7a;
+            margin-top: 10px;
+        }
+        
+        .timer-display {
+            font-size: 1.2rem;
+            color: #546e7a;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-start {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .btn-start:hover {
+            background-color: #388e3c;
+            transform: translateY(-3px);
+        }
+        
+        .btn-reset {
+            background-color: #ff9800;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #f57c00;
+            transform: translateY(-3px);
+        }
+        
+        .instructions {
+            background-color: #fff3e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 5px solid #ffb74d;
+        }
+        
+        .instructions h3 {
+            color: #ef6c00;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .garden {
+            width: 100%;
+            height: 400px;
+            background-color: #e8f5e9;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            border: 3px dashed #81c784;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 20px;
+            gap: 40px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+            background-size: 50px 50px, 80px 80px, 60px 60px;
+        }
+        
+        .tree-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.5s ease;
+            transform: scale(0);
+            animation: growTree 0.5s ease forwards;
+        }
+        
+        @keyframes growTree {
+            to { transform: scale(1); }
+        }
+        
+        /* 树苗样式 */
+        .tree-seedling {
+            position: relative;
+            width: 40px;
+            height: 70px;
+        }
+        
+        .tree-seedling .trunk {
+            position: absolute;
+            width: 8px;
+            height: 40px;
+            background: linear-gradient(to bottom, #8d6e63, #5d4037);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .tree-seedling .leaf {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle at 30% 30%, #8bc34a, #558b2f);
+            border-radius: 50% 50% 50% 0;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-15deg);
+            box-shadow: 0 0 10px rgba(139, 195, 74, 0.5);
+        }
+        
+        /* 小树样式 */
+        .tree-small {
+            position: relative;
+            width: 70px;
+            height: 100px;
+        }
+        
+        .tree-small .trunk {
+            position: absolute;
+            width: 12px;
+            height: 50px;
+            background: linear-gradient(to bottom, #8d6e63, #5d4037);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 6px 6px 0 0;
+            z-index: 1;
+        }
+        
+        .tree-small .leaf-1 {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 40% 40%, #7cb342, #33691e);
+            border-radius: 50% 50% 40% 40%;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(124, 179, 66, 0.6);
+            z-index: 2;
+        }
+        
+        .tree-small .leaf-2 {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 40% 40%, #7cb342, #33691e);
+            border-radius: 50% 40% 50% 40%;
+            top: 5px;
+            left: 55%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        
+        .tree-small .leaf-3 {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle at 40% 40%, #7cb342, #33691e);
+            border-radius: 40% 50% 40% 50%;
+            top: 10px;
+            left: 45%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        
+        /* 大树样式 */
+        .tree-large {
+            position: relative;
+            width: 100px;
+            height: 140px;
+        }
+        
+        .tree-large .trunk {
+            position: absolute;
+            width: 20px;
+            height: 70px;
+            background: linear-gradient(to bottom, #8d6e63, #5d4037);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px 10px 0 0;
+            z-index: 1;
+        }
+        
+        .tree-large .leaf-1 {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 40% 40%, #689f38, #1b5e20);
+            border-radius: 50% 50% 40% 40%;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(104, 159, 56, 0.7);
+            z-index: 2;
+        }
+        
+        .tree-large .leaf-2 {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle at 40% 40%, #689f38, #1b5e20);
+            border-radius: 50% 40% 50% 40%;
+            top: 15px;
+            left: 60%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        
+        .tree-large .leaf-3 {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 40% 40%, #689f38, #1b5e20);
+            border-radius: 40% 50% 40% 50%;
+            top: 20px;
+            left: 40%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        
+        .tree-large .leaf-4 {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: radial-gradient(circle at 40% 40%, #689f38, #1b5e20);
+            border-radius: 50% 40% 50% 40%;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+        }
+        
+        .tree-label {
+            font-size: 0.9rem;
+            color: #388e3c;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 3px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .grass {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to top, #81c784, #a5d6a7);
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+        }
+        
+        .grass::before, .grass::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #66bb6a;
+            border-radius: 50% 50% 0 50%;
+            bottom: 10px;
+        }
+        
+        .grass::before {
+            left: 15%;
+        }
+        
+        .grass::after {
+            right: 20%;
+            border-radius: 50% 50% 50% 0;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            background-color: #f1f8e9;
+            border-radius: 15px;
+            padding: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #546e7a;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: #4caf50;
+        }
+        
+        .notification.warning {
+            background-color: #ff9800;
+        }
+        
+        .notification.error {
+            background-color: #f44336;
+        }
+        
+        .sun {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #ffeb3b, #ff9800);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 152, 0, 0.7);
+            animation: sunGlow 3s infinite alternate;
+        }
+        
+        @keyframes sunGlow {
+            0% { box-shadow: 0 0 30px rgba(255, 152, 0, 0.7); }
+            100% { box-shadow: 0 0 40px rgba(255, 152, 0, 0.9), 0 0 60px rgba(255, 152, 0, 0.5); }
+        }
+        
+        .cloud {
+            position: absolute;
+            width: 100px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            top: 40px;
+            left: 50px;
+            animation: cloudMove 20s linear infinite;
+        }
+        
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+        }
+        
+        .cloud::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 15px;
+        }
+        
+        .cloud::after {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            right: 15px;
+        }
+        
+        @keyframes cloudMove {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(1200px); }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #546e7a;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 2px solid #b2dfdb;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .garden {
+                gap: 20px;
+            }
+            
+            .tree-large {
+                width: 80px;
+                height: 120px;
+            }
+            
+            .tree-small {
+                width: 60px;
+                height: 90px;
+            }
+        }
+        
+        .mic-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: #ccc;
+        }
+        
+        .mic-status.active {
+            background-color: #4caf50;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book-reader"></i> 早读养小树</h1>
+            <p class="tagline">朗朗书声，声声入耳；棵棵小树，树树成林</p>
+            <p class="subtitle">大声朗读吧！用你的声音浇灌小树苗，让它们在书声中茁壮成长，共同建造我们的朗读花园！</p>
+        </header>
+        
+        <div class="content">
+            <div class="control-panel">
+                <h2 class="panel-title"><i class="fas fa-sliders-h"></i> 控制面板</h2>
+                
+                <div class="db-control">
+                    <label class="db-label">目标分贝值（达到此分贝持续5秒可种树）：</label>
+                    <div class="db-input">
+                        <input type="range" min="10" max="60" value="25" class="db-slider" id="targetDb">
+                        <div class="db-value" id="targetDbValue">25</div>
+                    </div>
+                </div>
+                
+                <div class="db-control">
+                    <label class="db-label">消失分贝值（低于此分贝持续5秒树会消失）：</label>
+                    <div class="db-input">
+                        <input type="range" min="5" max="30" value="15" class="db-slider" id="disappearDb">
+                        <div class="db-value" id="disappearDbValue">15</div>
+                    </div>
+                </div>
+                
+                <div class="db-display">
+                    <p>当前朗读分贝：</p>
+                    <div class="current-db" id="currentDb">--</div>
+                    <p class="db-status" id="dbStatus">
+                        <span class="mic-status" id="micStatus"></span>
+                        请允许麦克风访问并点击开始监测
+                    </p>
+                    <p class="timer-display" id="timerDisplay">持续达标时间：0秒</p>
+                </div>
+                
+                <button class="btn btn-start" id="startBtn">
+                    <i class="fas fa-microphone"></i> 开始监测朗读声音
+                </button>
+                
+                <button class="btn btn-reset" id="resetBtn">
+                    <i class="fas fa-redo"></i> 重置花园
+                </button>
+                
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+                    <ul>
+                        <li>设置目标分贝值（建议25-35分贝）</li>
+                        <li>点击"开始监测朗读声音"按钮并允许麦克风访问</li>
+                        <li>大声朗读，使分贝值达到目标并保持5秒钟</li>
+                        <li>每成功一次，花园中就会长出一棵小树苗</li>
+                        <li>集齐5棵小树苗会合成一棵小树</li>
+                        <li>集齐5棵小树会合成一棵大树</li>
+                        <li>如果声音持续低于消失分贝值5秒，会消失一棵树</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="garden-container">
+                <h2 class="panel-title"><i class="fas fa-tree"></i> 朗读花园</h2>
+                <div class="garden" id="garden">
+                    <!-- 装饰元素 -->
+                    <div class="sun"></div>
+                    <div class="cloud"></div>
+                    <div class="grass"></div>
+                    
+                    <p id="emptyGardenMessage" style="align-self: center; color: #81c784; font-size: 1.5rem; z-index: 10; position: relative;">
+                        花园里还没有树，开始朗读吧！
+                    </p>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="seedlingCount">0</div>
+                        <div class="stat-label">小树苗</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="smallTreeCount">0</div>
+                        <div class="stat-label">小树</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="largeTreeCount">0</div>
+                        <div class="stat-label">大树</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalTrees">0</div>
+                        <div class="stat-label">总树木</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>早读养小树系统 | 朗朗书声激励计划 | 设计用于小学生早读课堂</p>
+            <p>温馨提示：请确保在安静环境下使用，避免背景噪音干扰分贝监测</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // 全局变量
+        let isMonitoring = false;
+        let audioContext;
+        let microphone;
+        let analyser;
+        let dataArray;
+        let targetDb = 25;
+        let disappearDb = 15;
+        let currentDb = 0;
+        let successTimer = 0;
+        let disappearTimer = 0;
+        let successTimerInterval;
+        let disappearTimerInterval;
+        let trees = [];
+        let seedlings = 0;
+        let smallTrees = 0;
+        let largeTrees = 0;
+        
+        // DOM元素
+        const targetDbSlider = document.getElementById('targetDb');
+        const targetDbValue = document.getElementById('targetDbValue');
+        const disappearDbSlider = document.getElementById('disappearDb');
+        const disappearDbValue = document.getElementById('disappearDbValue');
+        const currentDbDisplay = document.getElementById('currentDb');
+        const dbStatus = document.getElementById('dbStatus');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const garden = document.getElementById('garden');
+        const emptyGardenMessage = document.getElementById('emptyGardenMessage');
+        const notification = document.getElementById('notification');
+        const seedlingCount = document.getElementById('seedlingCount');
+        const smallTreeCount = document.getElementById('smallTreeCount');
+        const largeTreeCount = document.getElementById('largeTreeCount');
+        const totalTrees = document.getElementById('totalTrees');
+        const micStatus = document.getElementById('micStatus');
+        
+        // 初始化事件监听
+        function initEventListeners() {
+            targetDbSlider.addEventListener('input', function() {
+                targetDb = parseInt(this.value);
+                targetDbValue.textContent = targetDb;
+            });
+            
+            disappearDbSlider.addEventListener('input', function() {
+                disappearDb = parseInt(this.value);
+                disappearDbValue.textContent = disappearDb;
+            });
+            
+            startBtn.addEventListener('click', toggleMonitoring);
+            resetBtn.addEventListener('click', resetGarden);
+        }
+        
+        // 切换监测状态
+        function toggleMonitoring() {
+            if (!isMonitoring) {
+                startMonitoring();
+            } else {
+                stopMonitoring();
+            }
+        }
+        
+        // 开始监测
+        async function startMonitoring() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: false
+                    } 
+                });
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                microphone = audioContext.createMediaStreamSource(stream);
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 512;
+                analyser.smoothingTimeConstant = 0.8;
+                
+                microphone.connect(analyser);
+                
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                
+                isMonitoring = true;
+                startBtn.innerHTML = '<i class="fas fa-microphone-slash"></i> 停止监测';
+                startBtn.classList.add('btn-reset');
+                startBtn.classList.remove('btn-start');
+                dbStatus.textContent = '正在监测朗读声音...';
+                dbStatus.style.color = '#388e3c';
+                micStatus.classList.add('active');
+                
+                // 开始定时检查分贝
+                successTimerInterval = setInterval(updateSuccessTimer, 1000);
+                disappearTimerInterval = setInterval(updateDisappearTimer, 1000);
+                updateDbDisplay();
+                
+                showNotification('已开始监测朗读声音，请大声朗读吧！', 'success');
+            } catch (err) {
+                console.error('无法访问麦克风:', err);
+                showNotification('无法访问麦克风，请检查权限设置', 'error');
+                dbStatus.textContent = '麦克风访问被拒绝，请检查权限';
+                dbStatus.style.color = '#f44336';
+            }
+        }
+        
+        // 停止监测
+        function stopMonitoring() {
+            if (audioContext) {
+                audioContext.close();
+            }
+            
+            isMonitoring = false;
+            startBtn.innerHTML = '<i class="fas fa-microphone"></i> 开始监测朗读声音';
+            startBtn.classList.add('btn-start');
+            startBtn.classList.remove('btn-reset');
+            dbStatus.textContent = '监测已停止';
+            dbStatus.style.color = '#546e7a';
+            currentDbDisplay.textContent = '--';
+            timerDisplay.textContent = '持续达标时间：0秒';
+            micStatus.classList.remove('active');
+            
+            clearInterval(successTimerInterval);
+            clearInterval(disappearTimerInterval);
+            successTimer = 0;
+            disappearTimer = 0;
+            
+            showNotification('已停止声音监测', 'warning');
+        }
+        
+        // 更新分贝显示
+        function updateDbDisplay() {
+            if (!isMonitoring || !analyser) return;
+            
+            analyser.getByteFrequencyData(dataArray);
+            
+            // 计算平均分贝值
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            let average = sum / dataArray.length;
+            
+            // 将0-255的值转换为0-100的分贝近似值
+            // 增加一些随机性使显示更自然
+            currentDb = Math.floor(average / 2.55);
+            
+            // 模拟真实环境：安静时10-15分贝，朗读时25-40分贝
+            if (currentDb < 10) currentDb = Math.floor(Math.random() * 5) + 10;
+            
+            currentDbDisplay.textContent = currentDb;
+            
+            // 更新分贝状态
+            if (currentDb >= targetDb) {
+                dbStatus.innerHTML = '<span class="mic-status active"></span>声音达标！继续保持！';
+                dbStatus.style.color = '#4caf50';
+            } else if (currentDb < disappearDb) {
+                dbStatus.innerHTML = '<span class="mic-status active"></span>声音太小了，请大声朗读！';
+                dbStatus.style.color = '#f44336';
+            } else {
+                dbStatus.innerHTML = '<span class="mic-status active"></span>声音适中，再大声一点更棒！';
+                dbStatus.style.color = '#ff9800';
+            }
+            
+            // 继续更新
+            requestAnimationFrame(updateDbDisplay);
+        }
+        
+        // 更新成功计时器
+        function updateSuccessTimer() {
+            if (currentDb >= targetDb) {
+                successTimer++;
+                timerDisplay.textContent = `持续达标时间：${successTimer}秒`;
+                
+                if (successTimer >= 5) {
+                    addTree();
+                    successTimer = 0;
+                    timerDisplay.textContent = '持续达标时间：0秒';
+                }
+            } else {
+                successTimer = 0;
+                timerDisplay.textContent = '持续达标时间：0秒';
+            }
+        }
+        
+        // 更新消失计时器
+        function updateDisappearTimer() {
+            if (currentDb < disappearDb) {
+                disappearTimer++;
+                
+                if (disappearTimer >= 5) {
+                    removeTree();
+                    disappearTimer = 0;
+                }
+            } else {
+                disappearTimer = 0;
+            }
+        }
+        
+        // 添加树木
+        function addTree() {
+            // 添加树苗
+            trees.push('seedling');
+            seedlings++;
+            
+            // 检查是否应该升级树木
+            checkTreeUpgrades();
+            
+            // 更新花园显示
+            updateGarden();
+            updateTreeCounts();
+            
+            showNotification(`太棒了！你种下了一棵小树苗！`, 'success');
+        }
+        
+        // 移除树木
+        function removeTree() {
+            if (trees.length === 0) return;
+            
+            // 从最高级的树木开始移除
+            if (largeTrees > 0) {
+                // 移除一棵大树，将其分解为5棵小树
+                largeTrees--;
+                smallTrees += 5;
+                // 从树木数组中移除对应的树
+                for (let i = trees.length - 1; i >= 0; i--) {
+                    if (trees[i] === 'large') {
+                        trees.splice(i, 1);
+                        // 添加5棵小树
+                        for (let j = 0; j < 5; j++) {
+                            trees.push('small');
+                        }
+                        break;
+                    }
+                }
+            } else if (smallTrees > 0) {
+                // 移除一棵小树，将其分解为5棵树苗
+                smallTrees--;
+                seedlings += 5;
+                // 从树木数组中移除对应的树
+                for (let i = trees.length - 1; i >= 0; i--) {
+                    if (trees[i] === 'small') {
+                        trees.splice(i, 1);
+                        // 添加5棵树苗
+                        for (let j = 0; j < 5; j++) {
+                            trees.push('seedling');
+                        }
+                        break;
+                    }
+                }
+            } else if (seedlings > 0) {
+                // 移除一棵树苗
+                seedlings--;
+                // 从树木数组中移除一棵树苗
+                for (let i = trees.length - 1; i >= 0; i--) {
+                    if (trees[i] === 'seedling') {
+                        trees.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            
+            // 重新检查升级
+            checkTreeUpgrades();
+            
+            // 更新花园显示
+            updateGarden();
+            updateTreeCounts();
+            
+            showNotification('声音太小了，一棵树消失了！请大声朗读！', 'error');
+        }
+        
+        // 检查树木升级
+        function checkTreeUpgrades() {
+            // 检查树苗是否够5棵，升级为小树
+            while (seedlings >= 5) {
+                seedlings -= 5;
+                smallTrees++;
+                
+                // 从树木数组中移除5棵树苗，添加1棵小树
+                let removed = 0;
+                for (let i = trees.length - 1; i >= 0 && removed < 5; i--) {
+                    if (trees[i] === 'seedling') {
+                        trees.splice(i, 1);
+                        removed++;
+                    }
+                }
+                trees.push('small');
+                
+                showNotification('恭喜！5棵小树苗合成了一棵小树！', 'success');
+            }
+            
+            // 检查小树是否够5棵，升级为大树
+            while (smallTrees >= 5) {
+                smallTrees -= 5;
+                largeTrees++;
+                
+                // 从树木数组中移除5棵小树，添加1棵大树
+                let removed = 0;
+                for (let i = trees.length - 1; i >= 0 && removed < 5; i--) {
+                    if (trees[i] === 'small') {
+                        trees.splice(i, 1);
+                        removed++;
+                    }
+                }
+                trees.push('large');
+                
+                showNotification('太棒了！5棵小树合成了一棵大树！', 'success');
+            }
+        }
+        
+        // 更新花园显示
+        function updateGarden() {
+            // 创建一个新的容器来存放树木
+            const treesContainer = document.createElement('div');
+            treesContainer.id = 'trees-container';
+            treesContainer.style.display = 'flex';
+            treesContainer.style.flexWrap = 'wrap';
+            treesContainer.style.justifyContent = 'center';
+            treesContainer.style.alignItems = 'flex-end';
+            treesContainer.style.width = '100%';
+            treesContainer.style.gap = '40px';
+            treesContainer.style.position = 'relative';
+            treesContainer.style.zIndex = '5';
+            
+            if (trees.length === 0) {
+                emptyGardenMessage.style.display = 'block';
+                // 移除现有的树木容器
+                const existingContainer = document.getElementById('trees-container');
+                if (existingContainer) {
+                    existingContainer.remove();
+                }
+                return;
+            }
+            
+            emptyGardenMessage.style.display = 'none';
+            
+            // 显示所有树木
+            trees.forEach((treeType, index) => {
+                const treeContainer = document.createElement('div');
+                treeContainer.className = 'tree-container';
+                
+                // 创建树木
+                const treeElement = document.createElement('div');
+                treeElement.className = `tree tree-${treeType}`;
+                
+                // 根据树木类型添加不同的元素
+                if (treeType === 'seedling') {
+                    treeElement.innerHTML = `
+                        <div class="trunk"></div>
+                        <div class="leaf"></div>
+                    `;
+                } else if (treeType === 'small') {
+                    treeElement.innerHTML = `
+                        <div class="trunk"></div>
+                        <div class="leaf-1"></div>
+                        <div class="leaf-2"></div>
+                        <div class="leaf-3"></div>
+                    `;
+                } else if (treeType === 'large') {
+                    treeElement.innerHTML = `
+                        <div class="trunk"></div>
+                        <div class="leaf-1"></div>
+                        <div class="leaf-2"></div>
+                        <div class="leaf-3"></div>
+                        <div class="leaf-4"></div>
+                    `;
+                }
+                
+                const treeLabel = document.createElement('div');
+                treeLabel.className = 'tree-label';
+                
+                if (treeType === 'seedling') {
+                    treeLabel.textContent = '树苗';
+                } else if (treeType === 'small') {
+                    treeLabel.textContent = '小树';
+                } else {
+                    treeLabel.textContent = '大树';
+                }
+                
+                treeContainer.appendChild(treeElement);
+                treeContainer.appendChild(treeLabel);
+                treesContainer.appendChild(treeContainer);
+            });
+            
+            // 移除现有的树木容器
+            const existingContainer = document.getElementById('trees-container');
+            if (existingContainer) {
+                existingContainer.remove();
+            }
+            
+            // 添加到花园中（在草地的上方）
+            garden.appendChild(treesContainer);
+        }
+        
+        // 更新树木计数
+        function updateTreeCounts() {
+            seedlingCount.textContent = seedlings;
+            smallTreeCount.textContent = smallTrees;
+            largeTreeCount.textContent = largeTrees;
+            totalTrees.textContent = seedlings + smallTrees + largeTrees;
+        }
+        
+        // 重置花园
+        function resetGarden() {
+            trees = [];
+            seedlings = 0;
+            smallTrees = 0;
+            largeTrees = 0;
+            updateGarden();
+            updateTreeCounts();
+            showNotification('花园已重置，重新开始朗读吧！', 'warning');
+        }
+        
+        // 显示通知
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEventListeners();
+            updateTreeCounts();
+            
+            // 添加一些初始树木用于演示（可选）
+            // 为了测试，您可以取消注释下面的代码，添加3棵小树苗
+            /*
+            setTimeout(() => {
+                for (let i = 0; i < 3; i++) {
+                    trees.push('seedling');
+                    seedlings++;
+                }
+                updateGarden();
+                updateTreeCounts();
+            }, 1000);
+            */
+            
+            // 显示初始提示
+            setTimeout(() => {
+                if (trees.length === 0) {
+                    showNotification('欢迎使用早读养小树！设置目标分贝后，点击"开始监测"按钮，大声朗读吧！', 'success');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
